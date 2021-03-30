@@ -25,6 +25,7 @@ Currently, CaImAn consist of the following modules:
     .xlsx files whose filenames contains spaces (" "), which will be replaced by "_".
 
 DISCLAIMER:
+
 <<< CaImAn does only assist the user with the tedious work of analyzing 20-30 cells in an experiment for +20 experiments/day, by automating the analysis workflow. It is up to the user to understand the sort of analysis that are being performed, to check whether the calculations are correct or wrong and finally, to extract a meaning from the obtained data.
 
 This is a little program that I have written for myself and my lab, but even when I am seasoned in the field of imaging calcium analysis, it has only been two months since I started to learn Python (the current date is March 30th, 2021). Therefore, I invite you to use CaImAn, but please, double-check your results if you are considering using the obtained data for publication.” >>>
