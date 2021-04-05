@@ -28,7 +28,7 @@ DISCLAIMER:
 
 <<< CaImAn does only assist the user with the tedious work of analyzing 20-30 cells in an experiment for +20 experiments/day, by automating the analysis workflow.
 
-This is a little program that I have written for myself and my lab, Ficel, but even when I have extensive experience in the field of imaging calcium analysis, it has only been two months since I started to learn Python (the current date is March 30th, 2021) or any other programming language, beside some short coding in the Fiji ImageJ script editor.
+This is a little program that I have written for myself and my lab, Ficel, but even when I have extensive experience in the field of imaging calcium analysis, it has only been two months since I started learning Python (the current date is March 30th, 2021) or any other programming language, beside some short coding in the Fiji ImageJ script editor.
 
 Therefore, use CaImAn under your consideration and double-check your results if you are considering utilizing the obtained data for publication. I do not warrant that the results are accurate, complete, reliable or error free. I do not take any responsibility for any mistakes, misunderstanding or misinterpretation derived from using CaImAn. It is up to the user to understand the sort of analysis that are being performed, to check whether the calculations are correct and finally, to extract a meaning from the obtained data. 
 

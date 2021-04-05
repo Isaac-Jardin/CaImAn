@@ -117,6 +117,33 @@ welcome_message_v_1_69 = """
     Have fun.!
 """
 
+welcome_message_v_1_73 = """
+    Welcome to Calcium Imaging Analyzer (CaImAn) v.1.73
+    By Isaac Jardin.
+
+    By running this program you will be able to automatically analyze your calcium imaging experiments
+    recorded with the Nikon Imaging Software (NIS) or to format them in order to be able to use CaImAn.
+
+    1 - Analysis:
+            > Calcium entry experiments (Medium with calcium -> Agonist). Single and multiple files.
+            > SOCE experiments (Calcium-free medium [EGTA] -> Agonist -> Extracellular calcium). Single and multiple files.
+            > Calcium oscillation experiments (Medium with calcium -> Agonist). Single files and multiple files.
+        
+        Formatting:
+            > .csv files generated with the Fiji ImageJ macro "Reanálisis_Fura2_Nikon_FINAL_V_2.ijm" modified from Pedro Camello.
+            > .xlsx files whose filenames contains spaces (" "), which will be replaced by "_".      
+    
+    2 - You would need to provide ONE ROW NUMBER (Basal pre-stimuli) or TWO ROW NUMBERS (Basal pre-stimuli and basal pre-calcium adition).
+        You might manually modify the adquisiton time (2s), AUC time (150s), slopes duration (30s).
+        Results: The AUC and slopes for single cells and average of the whole experiment both in ratio and ratio F/F0.
+            
+    <<  Disclaimer: CaImAn will always read a file, create a copy and keep the original unmodified.
+        Nevertheless, I would utterly recommend you to work with backed up files, and not original ones. >> 
+    
+    If you have suggestions, doubts or detect any bug, please contact me at isaac.jardin@gmail.com.
+    Have fun.!
+"""
+
 
 time_initial_linregress_text = """
     To work correctly, this program needs to calculate the fura2 fluorescence initial curve fitting (regression analysis).
@@ -149,3 +176,30 @@ filename_without_spaces_message = """
                   'MDA MB 231 shOrai1' ---> 'MDA_MB_231_shOrai1'
     becoming a elegible file to be analyzed by Calcium_Imaging_Analyzer.py.
     """
+
+
+integral_time_message = """Set the number of frames(values) taken to calculate the AUC.
+By default, 75 frames, which corresponds to 1 frame/2 seconds for 150 seconds.
+Leave it empty to set the default value: """
+
+
+slope_time_release_message = """Set the number of frames(values) taken to calculate the calcium release trendline.
+By default, 15 frames, which corresponds to 1 frame/2 seconds for 30 seconds.
+Leave it empty to set the default value: """
+
+slope_time_entry_message = """Set the number of frames(values) taken to calculate the calcium entry trendline.
+By default, 15 frames, which corresponds to 1 frame/2 seconds for 30 seconds.
+Leave it empty to set the default value: """
+
+keyword_message = """Introduce one word with the studied parameter (for example 'Ratio', 'FITC', 'YFP', ...)
+or leave it empty to set the default (Ratio): """
+
+analysis_study_dict = ["SOCE analysis (single file).",
+                       "Calcium entry analysis (single file).",
+                       "Imaging calcium oscillations analysis (single file).",
+                       "Confocal calcium oscillations analysis (single file).",
+                       "SOCE analysis (multiple files).",
+                       "Calcium entry analysis (multiple files).",
+                       "Imaging calcium oscillations analysis (multiple files).",
+                       "Go back to the main menu.",
+                       ]

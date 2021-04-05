@@ -1,7 +1,9 @@
 from openpyxl.chart import ScatterChart, Reference, Series
 from openpyxl.chart.trendline import Trendline
-from openpyxl.utils.cell import absolute_coordinate
+from openpyxl.styles import Alignment, Border, Font, Side
+from openpyxl.utils.cell import absolute_coordinate, get_column_letter
 from caiman_functions.caiman_styles import caiman_excel_styles as ca_ex_st
+
 
 # analyzed_cells function calculates the number of cells analyze during the experiment.
 
@@ -36,15 +38,15 @@ def average_se_trace_full_experiment(file_max_column, file_max_row, sheet):
     sheet[average_trace_SE_header] = "Experiment SE"
     ca_ex_st.style_headers(average_trace_SE_header, sheet)
 
-    for row in range(4, file_max_row + 1):
-        first_cell = sheet.cell(row=row, column=3).coordinate
+    for row in range(3, file_max_row + 1):
+        first_cell = sheet.cell(row=row, column=2).coordinate
         last_cell = sheet.cell(row=row, column=file_max_column).coordinate
         average_cells = f"= average({first_cell}:{last_cell})"
         average_value = sheet.cell(
             row=row, column=file_max_column + 4).coordinate
         sheet[average_value] = average_cells
         ca_ex_st.style_number(average_value, sheet)
-        standar_error_cells = f"= stdev({first_cell}:{last_cell})/sqrt({file_max_column-2})"
+        standar_error_cells = f"= stdev({first_cell}:{last_cell})/sqrt({file_max_column-1})"
         standar_error_value = sheet.cell(
             row=row, column=file_max_column + 5).coordinate
         sheet[standar_error_value] = standar_error_cells
@@ -68,9 +70,9 @@ def average_se_trace_full_experiment_chart(file_max_column, file_max_row, sheet)
     chart.x_axis.majorUnit = 60
     ca_ex_st.style_chart(chart.title, chart)
 
-    xvalues = Reference(sheet, min_col=file_max_column + 3, min_row=4,
+    xvalues = Reference(sheet, min_col=file_max_column + 3, min_row=3,
                         max_col=file_max_column + 3, max_row=file_max_row)
-    yvalues = Reference(sheet, min_col=file_max_column + 4, min_row=4,
+    yvalues = Reference(sheet, min_col=file_max_column + 4, min_row=3,
                         max_col=file_max_column + 4, max_row=file_max_row)
     series = Series(yvalues, xvalues)
     series_trendline = Series(yvalues, xvalues)
@@ -146,13 +148,85 @@ def experiment_time_in_seconds(adquisiton_time, file_max_column, file_max_row, s
     sheet[time_header] = "Experiment Time (s)"
     ca_ex_st.style_headers(time_header, sheet)
     experiment_time = 0
-    for row in range(4, file_max_row + 1):
+    for row in range(3, file_max_row + 1):
         experiment_time_row = sheet.cell(
             row=row, column=file_max_column + 3).coordinate
         sheet[experiment_time_row] = experiment_time
         ca_ex_st.style_time(experiment_time_row, sheet)
         experiment_time += adquisiton_time
 
+
+# initial_sheet_formating function formats the worksheet eliminating unnecesary columns and rows.
+# sheet: calculated by any of the analysis functions.
+
+
+def initial_sheet_formating(route, sheet, wb):
+    # Empty dictionary to store the dimensions of the columns.
+    dims = {}
+    for row in sheet:
+        for cell in row:
+            # Personal cells style
+            if cell.value != None:
+                font_title = Font(bold=False)
+                cell.font = font_title
+                cell.number_format = '0.0000'
+                cell.alignment = Alignment(
+                    horizontal="center", vertical="center")
+                # Calculates the widthest value within the cells of a column and set that column width to such a value.
+                dims[cell.column_letter] = max(
+                    (dims.get(cell.column_letter, 0), len(str(cell.value))))
+    for col, value in dims.items():
+        sheet.column_dimensions[col].width = value
+
+    # Deletes the first column, which presents the number of taken frames and it's unnecesary.
+    sheet.delete_cols(1)
+    # Deletes the third row, which is a empty one, to avoid TypeError NoneType.
+    sheet.delete_rows(3)
+    # Set the name of the experiment in cell A1.
+    sheet.cell(row=1, column=1).value = route
+    # sheet.cell(row=1, column=1).value = route# Freezes the 1st and 2nd row, which contain the sample names.
+    sheet.freeze_panes = "A3"
+    sheets = wb.sheetnames
+    # Deletes all the worksheet but the one with the data.
+    for sheet in sheets:
+        if sheet != "Time Measurement Report":
+            to_delete = wb[sheet]
+            wb.remove(to_delete)
+
+
+def initial_sheet_formating_calcium_oscillation_experiment(route, sheet, wb):
+    # Empty dictionary to store the dimensions of the columns.
+    dims = {}
+    for row in sheet:
+        for cell in row:
+            # Personal cells style
+            if cell.value != None:
+                font_title = Font(bold=False)
+                cell.font = font_title
+                cell.number_format = '0.0000'
+                cell.alignment = Alignment(
+                    horizontal="center", vertical="center")
+                # Calculates the widthest value within the cells of a column and set that column width to such a value.
+                dims[cell.column_letter] = max(
+                    (dims.get(cell.column_letter, 0), len(str(cell.value))))
+    for col, value in dims.items():
+        sheet.column_dimensions[col].width = value
+
+    # Deletes the first column, which presents the number of taken frames and it's unnecesary.
+    sheet.delete_cols(1)
+    sheet.insert_cols(2)
+    # Deletes the third row, which is a empty one, to avoid TypeError NoneType.
+    sheet.delete_rows(3)
+    # Set the name of the experiment in cell A1.
+    sheet.cell(row=1, column=1).value = route
+    # sheet.cell(row=1, column=1).value = route# Freezes the 1st and 2nd row, which contain the sample names.
+    sheet.freeze_panes = "A3"
+    sheets = wb.sheetnames
+    # Deletes all the worksheet but the one with the data.
+    for sheet in sheets:
+        if sheet != "Time Measurement Report":
+            to_delete = wb[sheet]
+            wb.remove(to_delete)
 
 # parameter_integral_ratio_values function generates an excel cell with the calculated integral value in the integral_time range
 # for a given parameter in each sample. (Parameters= Calcium release | Calcium Entry)
@@ -289,36 +363,38 @@ def single_cell_average_se_paramemeters(analyzed_cells, analyzed_parameter, n_in
 # writing the result in the worksheet 'F_F0'.
 
 
-def single_cell_ratio_normalized_f_f0(sheet_f_f0_max_column, sheet_f_f0_max_row, sheet_f_f0):
+def single_cell_ratio_normalized_f_f0(keyword, sheet_f_f0_max_column, sheet_f_f0_max_row, sheet_f_f0):
     number_cell = 1
     for column in range(1, sheet_f_f0_max_column + 1):
-        if "Ratio" in sheet_f_f0.cell(row=2, column=column).value:
-            sample_number_header = sheet_f_f0.cell(
-                row=2, column=column).coordinate
-            sheet_f_f0[sample_number_header] = f"F/F0 - Cell {number_cell}"
-            ca_ex_st.style_headers(sample_number_header, sheet_f_f0)
+        if sheet_f_f0.cell(row=2, column=column).value:
+            if keyword in sheet_f_f0.cell(row=2, column=column).value:
+                sample_number_header = sheet_f_f0.cell(
+                    row=2, column=column).coordinate
+                sheet_f_f0[sample_number_header] = f"#{number_cell:02} {keyword} - F/F0"
+                ca_ex_st.style_headers(sample_number_header, sheet_f_f0)
 
-            basal_begining = sheet_f_f0.cell(
-                row=4, column=column).coordinate
-            basal_ending = sheet_f_f0.cell(
-                row=14, column=column).coordinate
-            ca_f_f0_integral_header = sheet_f_f0.cell(
-                row=1, column=column).coordinate
-            sheet_f_f0[
-                ca_f_f0_integral_header] = f"= average('Time Measurement Report'!{basal_begining}:{basal_ending})"
-            ca_ex_st.style_average_values(ca_f_f0_integral_header, sheet_f_f0)
-
-            # Cálculo ratio de calcio basal al comienzo del experimento
-            for row in range(4, sheet_f_f0_max_row + 1):
-                ratio_sample = sheet_f_f0.cell(
-                    row=row, column=column).coordinate
-                ratio_normalized = sheet_f_f0.cell(
-                    row=row, column=column).coordinate
+                basal_begining = sheet_f_f0.cell(
+                    row=3, column=column).coordinate
+                basal_ending = sheet_f_f0.cell(
+                    row=13, column=column).coordinate
+                ca_f_f0_integral_header = sheet_f_f0.cell(
+                    row=1, column=column).coordinate
                 sheet_f_f0[
-                    ratio_normalized] = f"= 'Time Measurement Report'!{ratio_sample}/F_F0!{absolute_coordinate(ca_f_f0_integral_header)}"
-                ca_ex_st.style_number(ratio_normalized, sheet_f_f0)
+                    ca_f_f0_integral_header] = f"= average('Time Measurement Report'!{basal_begining}:{basal_ending})"
+                ca_ex_st.style_average_values(
+                    ca_f_f0_integral_header, sheet_f_f0)
 
-            number_cell += 1
+                # Cálculo ratio de calcio basal al comienzo del experimento
+                for row in range(3, sheet_f_f0_max_row + 1):
+                    ratio_sample = sheet_f_f0.cell(
+                        row=row, column=column).coordinate
+                    ratio_normalized = sheet_f_f0.cell(
+                        row=row, column=column).coordinate
+                    sheet_f_f0[
+                        ratio_normalized] = f"= 'Time Measurement Report'!{ratio_sample}/F_F0!{absolute_coordinate(ca_f_f0_integral_header)}"
+                    ca_ex_st.style_number(ratio_normalized, sheet_f_f0)
+
+                number_cell += 1
 
 
 # single_cell_traces_in_one_chart function generates 1 single scatter chart within the file with all the traces represented where:
@@ -343,13 +419,13 @@ def single_cell_traces_in_one_chart(file_max_column, file_max_row, sheet):
     chart.x_axis.majorUnit = 60
     ca_ex_st.style_chart(chart.title, chart)
 
-    xvalues = Reference(sheet, min_col=file_max_column + 3, min_row=4,
+    xvalues = Reference(sheet, min_col=file_max_column + 3, min_row=3,
                         max_col=file_max_column + 3, max_row=file_max_row)
 
-    for column in range(3, file_max_column + 1):
+    for column in range(2, file_max_column + 1):
         # print(column)
         values = Reference(sheet, min_col=column,
-                           min_row=4, max_row=file_max_row)
+                           min_row=3, max_row=file_max_row)
         series = Series(values, xvalues)
         chart.series.append(series)
 
@@ -366,14 +442,14 @@ def single_cell_traces_in_one_chart(file_max_column, file_max_row, sheet):
 # time_column: calculates the maximun column number within the file.
 
 
-def single_cell_trace_in_individual_chart(column, column_individual_trace_charts, experiment_number, file_max_row, sheet, row_individual_trace_charts, time_column):
+def single_cell_trace_in_individual_chart(column, column_individual_trace_charts, chart_name, file_max_row,  sheet, row_individual_trace_charts, time_column):
 
     chart_cell = sheet.cell(row=row_individual_trace_charts,
                             column=column_individual_trace_charts).coordinate
 
     chart = ScatterChart()
     chart.style = 2
-    chart.title = f"Cell {experiment_number}: individual_trace"
+    chart.title = f"{chart_name}: individual_trace"
     chart.y_axis.title = "Fura2 fluorescence ratio (a.u)"
     chart.x_axis.title = "Time (s)"
     chart.legend = None
@@ -382,9 +458,9 @@ def single_cell_trace_in_individual_chart(column, column_individual_trace_charts
     chart.x_axis.majorUnit = 60
     ca_ex_st.style_chart(chart.title, chart)
 
-    xvalues = Reference(sheet, min_col=time_column, min_row=4,
+    xvalues = Reference(sheet, min_col=time_column, min_row=3,
                         max_col=time_column, max_row=file_max_row)
-    yvalues = Reference(sheet, min_col=column, min_row=4,
+    yvalues = Reference(sheet, min_col=column, min_row=3,
                         max_col=column, max_row=file_max_row)
     series = Series(yvalues, xvalues)
     chart.series.append(series)
@@ -401,14 +477,14 @@ def single_cell_trace_in_individual_chart(column, column_individual_trace_charts
 # row_individual_trace_charts: Determines the column where the chart will be created
 
 
-def single_cell_slope_trace_chart(column, column_slope_charts, experiment_number, row_charts, row_number, sheet, slope_name, slope_time, time_column):
+def single_cell_slope_trace_chart(column, column_slope_charts, chart_name, row_charts, row_number, sheet, slope_name, slope_time, time_column):
 
     chart_cell = sheet.cell(row=row_charts,
                             column=column_slope_charts).coordinate
 
     chart = ScatterChart()
     chart.style = 2
-    chart.title = f"Cell {experiment_number}: {slope_name} slope"
+    chart.title = f"{chart_name}: {slope_name} slope"
     chart.y_axis.title = "Fura2 fluorescence ratio (a.u)"
     chart.x_axis.title = "Time (s)"
     chart.legend = None

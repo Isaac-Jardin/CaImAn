@@ -16,14 +16,14 @@ def complete_formating_module():
 
     while True:
 
-        analysis_study = pyip.inputMenu(choices=["_ImageJ.csv to .xlsx file converter (single file).",
+        analysis_study = pyip.inputMenu(choices=["_imageJ.csv to .xlsx file converter (single file).",
                                                  ".xlsx filename without spaces (single file).",
-                                                 "_ImageJ.csv to .xlsx files converter (multiple files).",
+                                                 "_imageJ.csv to .xlsx files converter (multiple files).",
                                                  ".xlsx filenames without spaces (multiple file).",
                                                  "Go back to the main menu.",
                                                  ], prompt="What sort of file do you want to format?: \n", numbered=True)
 
-        if analysis_study == "_ImageJ.csv to .xlsx file converter (single file).":
+        if analysis_study == "_imageJ.csv to .xlsx file converter (single file).":
             print(ca_mess.imageJ_csv_to_xlsx_message)
             route = pyip.inputFilepath(
                 prompt="Please enter your file path: ")
@@ -43,7 +43,7 @@ def complete_formating_module():
                 f"Execution time: {round((time.time()-start_time), 2)} seconds.")
             print("Done.\n")
 
-        elif analysis_study == "_ImageJ.csv to .xlsx files converter (multiple files).":
+        elif analysis_study == "_imageJ.csv to .xlsx files converter (multiple files).":
             print(ca_mess.imageJ_csv_to_xlsx_message)
             route = pyip.inputFilepath(
                 prompt="Please enter your folder path: ")

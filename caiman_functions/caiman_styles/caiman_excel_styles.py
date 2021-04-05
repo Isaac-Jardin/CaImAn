@@ -4,6 +4,23 @@ import openpyxl
 from openpyxl.chart.text import RichText
 from openpyxl.drawing.text import Paragraph, ParagraphProperties, CharacterProperties, RichTextProperties, RegularTextRun
 from openpyxl.styles import Alignment, Border, Font, Side
+from openpyxl.utils.cell import get_column_letter
+
+
+def colum_max_widths_non_oscillation_calcium_experiments(sheet):
+    max_column = sheet.max_column
+    for col in range(1, max_column + 30):
+        sheet.column_dimensions[get_column_letter(col)].width = 11
+
+
+def colum_max_widths_oscillation_calcium_experiments(sheet, column_num_data):
+    max_column = sheet.max_column
+    for col in range(1, max_column + 1):
+        if col == column_num_data:
+            sheet.column_dimensions[get_column_letter(
+                column_num_data)].width = 41
+        else:
+            sheet.column_dimensions[get_column_letter(col)].width = 11
 
 
 def automatic_column_widths(sheet):
@@ -15,7 +32,7 @@ def automatic_column_widths(sheet):
                 dims[cell.column_letter] = max(
                     (dims.get(cell.column_letter, 0), len(str(cell.value))))
     for col, value in dims.items():
-        sheet.column_dimensions[col].width = value
+        sheet.column_dimensions[col].width = value + 2
 
 
 def automatic_no_borders_cell(wb, sheet):
@@ -45,6 +62,14 @@ def style_oscillation_calculated_parameters_header(cell, sheet):
     header_position = sheet[cell]
     header_position.alignment = Alignment(
         horizontal="right", vertical="center", wrapText=False, indent=1)
+
+
+def style_experiment_title_header(cell, sheet):
+    font_title = Font(color="FF0000", bold=True)  # Red
+    sheet[cell].font = font_title
+    header_position = sheet[cell]
+    header_position.alignment = Alignment(
+        horizontal="left", vertical="center", wrapText=False, indent=1)
 
 
 def style_average_values(cell, sheet):

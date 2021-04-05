@@ -9,6 +9,7 @@ import pandas as pd
 from pathlib import Path
 import pyinputplus as pyip
 import time
+from openpyxl.styles import Alignment, Border, Font, Side
 
 from caiman_functions.caiman_styles import caiman_excel_styles as ca_ex_st
 
@@ -32,11 +33,21 @@ def imageJ_reanalysis_multiple_files(folder_path):
             if "imageJ.xlsx" in file:
                 wb = openpyxl.load_workbook(file)
                 sheet = wb.active
+                for row in sheet:
+                    for cell in row:
+                        # Personal cells style
+                        if cell.value != None:
+                            font_title = Font(bold=False)
+                            cell.font = font_title
+                            cell.number_format = '0.0000'
+                            cell.alignment = Alignment(
+                                horizontal="center", vertical="center")
+
                 sheet.title = "Time Measurement Report"
-                sheet.insert_rows(2)
                 sheet.insert_rows(1)
                 time_header = sheet.cell(row=2, column=1).coordinate
                 sheet[time_header] = "Time (s)"
+                sheet.cell(row=1, column=1).value = splitted_file
                 file_max_column = sheet.max_column
                 number_cell = 1
                 for column in range(1, file_max_column + 1):
@@ -50,6 +61,15 @@ def imageJ_reanalysis_multiple_files(folder_path):
                             number_cell += 1
                     except TypeError:
                         pass
+
+                # Calculates the widthest value within the cells of a column and set that column width to such a value.
+                dims = {}
+                for row in sheet:
+                    for cell in row:
+                        dims[cell.column_letter] = max(
+                            (dims.get(cell.column_letter, 0), len(str(cell.value))))
+                for col, value in dims.items():
+                    sheet.column_dimensions[col].width = value
 
                 splitted_file = file.split(".xlsx")[0]
                 wb.save(os.path.join(folder, file))
@@ -68,11 +88,21 @@ def imageJ_reanalysis_single_file(route):
 
     wb = openpyxl.load_workbook(save_route)
     sheet = wb.active
+    for row in sheet:
+        for cell in row:
+            # Personal cells style
+            if cell.value != None:
+                font_title = Font(bold=False)
+                cell.font = font_title
+                cell.number_format = '0.0000'
+                cell.alignment = Alignment(
+                    horizontal="center", vertical="center")
+
     sheet.title = "Time Measurement Report"
-    sheet.insert_rows(2)
     sheet.insert_rows(1)
     time_header = sheet.cell(row=2, column=1).coordinate
     sheet[time_header] = "Time (s)"
+    sheet.cell(row=1, column=1).value = splitted_file
     file_max_column = sheet.max_column
     number_cell = 1
     for column in range(1, file_max_column + 1):
@@ -85,6 +115,15 @@ def imageJ_reanalysis_single_file(route):
                 number_cell += 1
         except TypeError:
             pass
+
+    # Calculates the widthest value within the cells of a column and set that column width to such a value.
+    dims = {}
+    for row in sheet:
+        for cell in row:
+            dims[cell.column_letter] = max(
+                (dims.get(cell.column_letter, 0), len(str(cell.value))))
+    for col, value in dims.items():
+        sheet.column_dimensions[col].width = value
 
     splitted_file = save_route.split(".xlsx")[0]
     wb.save(save_route)
