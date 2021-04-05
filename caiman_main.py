@@ -1,5 +1,5 @@
 #! python3
-# Calcium Imaging Analyzer v.1.69
+# Calcium Imaging Analyzer v.1.73
 # By Isaac Jardin
 
 import pprint
