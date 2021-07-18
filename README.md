@@ -1,6 +1,6 @@
 # CaImAn
 
-Calcium Imaging Analyzer (CaImAn) v.1.73 consists of a bunch of scripts written in Python 3.9 and put together to speed the analysis of calcium imaging experiments performed with the NIS-Elements Advanced Research software, from Nikon Corporation.
+Calcium Imaging Analyzer (CaImAn) consists of a bunch of scripts written in Python 3.9 and put together to speed the analysis of calcium imaging experiments performed with the NIS-Elements Advanced Research software, from Nikon Corporation.
 
 CaImAn handles single files as well as several files in a folder. The user would only need to provide the path and the required parameter for each experiment. It works with Excel files produced by NIS, or just any other Excel file that mimics the format of those created by NIS.
 

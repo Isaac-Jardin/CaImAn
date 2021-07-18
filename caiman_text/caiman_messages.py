@@ -144,6 +144,33 @@ welcome_message_v_1_73 = """
     Have fun.!
 """
 
+welcome_message_v_1_75 = """
+    Welcome to Calcium Imaging Analyzer (CaImAn) v.1.75
+    By Isaac Jardin.
+
+    By running this program you will be able to automatically analyze your calcium imaging experiments
+    recorded with the Nikon Imaging Software (NIS) or to format them in order to be able to use CaImAn.
+
+    1 - Analysis:
+            > Calcium entry experiments (Medium with calcium -> Agonist). Single and multiple files.
+            > SOCE experiments (Calcium-free medium [EGTA] -> Agonist -> Extracellular calcium). Single and multiple files.
+            > Calcium oscillation experiments (Medium with calcium -> Agonist). Single files and multiple files.
+        
+        Formatting:
+            > .csv files generated with the Fiji ImageJ macro "Reanálisis_Fura2_Nikon_FINAL_V_2.ijm" modified from Pedro Camello.
+            > .xlsx files whose filenames contains spaces (" "), which will be replaced by "_".      
+    
+    2 - You would need to provide ONE ROW NUMBER (Basal pre-stimuli) or TWO ROW NUMBERS (Basal pre-stimuli and basal pre-calcium adition).
+        You might manually modify the adquisiton time (2s), AUC time (150s), slopes duration (30s).
+        Results: The AUC and slopes for single cells and average of the whole experiment both in ratio and ratio F/F0.
+            
+    <<  Disclaimer: CaImAn will always read a file, create a copy and keep the original unmodified.
+        Nevertheless, I would utterly recommend you to work with backed up files, and not original ones. >> 
+    
+    If you have suggestions, doubts or detect any bug, please contact me at isaac.jardin@gmail.com.
+    Have fun.!
+"""
+
 
 time_initial_linregress_text = """
     To work correctly, this program needs to calculate the fura2 fluorescence initial curve fitting (regression analysis).
@@ -206,7 +233,7 @@ analysis_study_dict = ["SOCE analysis (single file).",
 
 
 readme = """
-Calcium Imaging Analyzer (CaImAn) v.1.73 consists of a bunch of scripts written in Python 3.9 and put together to speed the analysis of calcium imaging experiments performed with the NIS-Elements Advanced Research software, from Nikon Corporation.
+Calcium Imaging Analyzer (CaImAn) consists of a bunch of scripts written in Python 3.9 and put together to speed the analysis of calcium imaging experiments performed with the NIS-Elements Advanced Research software, from Nikon Corporation.
 
 CaImAn handles single files as well as several files in a folder. The user would only need to provide the path and the required parameter for each experiment. It works with Excel files produced by NIS, or just any other Excel file that mimics the format of those created by NIS.
 

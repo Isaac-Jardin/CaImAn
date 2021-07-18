@@ -1,5 +1,5 @@
 #! python3
-# Calcium Imaging Analyzer v.1.73
+# Calcium Imaging Analyzer v.1.75
 # By Isaac Jardin
 
 import pprint
@@ -9,7 +9,7 @@ from caiman_main_modules.caiman_formating_module import complete_formating_modul
 from caiman_text import caiman_messages as ca_mess
 
 
-print(ca_mess.welcome_message_v_1_73)
+print(ca_mess.welcome_message_v_1_75)
 
 
 while True:
