@@ -25,8 +25,7 @@ while True:
         complete_formating_module()
 
     elif menu_choice == "Open Readme file":
-        with open("README.md", "r", encoding="UTF-8") as f:
-            print(f.read())
+        print(ca_mess.readme)
 
     else:
         print("Thank you for using the program. Have a nice day.\n")
