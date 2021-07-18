@@ -5,10 +5,9 @@ from openpyxl.utils.cell import absolute_coordinate, get_column_letter
 from caiman_functions.caiman_styles import caiman_excel_styles as ca_ex_st
 
 
-# analyzed_cells function calculates the number of cells analyze during the experiment.
-
-
 def analyzed_cell_number(sheet):
+    # analyzed_cells function calculates the number of cells analyze during the experiment.
+
     new_file_max_column = sheet.max_column
     new_file_max_row = sheet.max_row
     analyzed_cells = 0
@@ -20,14 +19,13 @@ def analyzed_cell_number(sheet):
     return analyzed_cells
 
 
-# average_se_trace_full_experiment function calculates the average and standard error of all the samples in each time-point
-# generating and average trace for the whole experiment with its standard error.
-# file_max_column: calculated by any of the analysis functions.
-# file_max_row: calculated by any of the analysis functions.
-# sheet: calculated by any of the analysis functions.
-
-
 def average_se_trace_full_experiment(file_max_column, file_max_row, sheet):
+    # average_se_trace_full_experiment function calculates the average and standard error of all the samples in each time-point
+    # generating and average trace for the whole experiment with its standard error.
+    # file_max_column: calculated by any of the analysis functions.
+    # file_max_row: calculated by any of the analysis functions.
+    # sheet: calculated by any of the analysis functions.
+
     average_trace_header = sheet.cell(
         row=2, column=file_max_column + 4).coordinate
     sheet[average_trace_header] = "Experiment Average"
@@ -53,10 +51,9 @@ def average_se_trace_full_experiment(file_max_column, file_max_row, sheet):
         ca_ex_st.style_number(standar_error_value, sheet)
 
 
-# average_se_trace_full_experiment_chart generates a plot with the average values from the average_se_trace_full_experiment function.
-
-
 def average_se_trace_full_experiment_chart(file_max_column, file_max_row, sheet):
+    # average_se_trace_full_experiment_chart generates a plot with the average values from the average_se_trace_full_experiment function.
+
     chart_cell = sheet.cell(row=4, column=file_max_column + 7).coordinate
 
     chart = ScatterChart()
@@ -82,19 +79,19 @@ def average_se_trace_full_experiment_chart(file_max_column, file_max_row, sheet)
     sheet.add_chart(chart, chart_cell)
 
 
-# basal_ratio_pretreatment_and_increment_calculation function calculates the basal ratio before pre-estimuli or precalcium,
-# and generates the "ratio true value - ratio basal value" for each frame,
-# allowing us to calculate the agonist-evoked Ca2+ release and/or entry
-# as the integral of the rise in fura-2 fluorescence ratio
-# for 2½ min after the addition of the agonist or CaCl2.
-# to achieve that, the function requieres the following values:
-# column: calculated by any of the analysis functions.
-# integral_time: Set as default as 150 seconds, but could be modified by the user.
-# file_max_column: calculated by any of the analysis functions.
-# row_number: use pre_stimuli to calculate the calcium release integral or pre_calcium for the calcium entry integral.
-# sheet: calculated by any of the analysis functions.
-
 def basal_ratio_pretreatment_and_increment_calculation(column, file_max_column, integral_time, row_number, sheet):
+    # basal_ratio_pretreatment_and_increment_calculation function calculates the basal ratio before pre-estimuli or precalcium,
+    # and generates the "ratio true value - ratio basal value" for each frame,
+    # allowing us to calculate the agonist-evoked Ca2+ release and/or entry
+    # as the integral of the rise in fura-2 fluorescence ratio
+    # for 2½ min after the addition of the agonist or CaCl2.
+    # to achieve that, the function requieres the following values:
+    # column: calculated by any of the analysis functions.
+    # integral_time: Set as default as 150 seconds, but could be modified by the user.
+    # file_max_column: calculated by any of the analysis functions.
+    # row_number: use pre_stimuli to calculate the calcium release integral or pre_calcium for the calcium entry integral.
+    # sheet: calculated by any of the analysis functions.
+
     ca_integral = row_number
     basal_begining = sheet.cell(
         row=ca_integral - 11, column=column).coordinate
@@ -116,14 +113,13 @@ def basal_ratio_pretreatment_and_increment_calculation(column, file_max_column, 
         ca_ex_st.style_number(ratio_normalized, sheet)
 
 
-# experiment_time_in_seconds function generates a column with the experiment duration in seconds.
-# adquisiton_time: Set as default as 2 seconds, but could be modified by the user.
-# file_max_column: calculated by any of the analysis functions.
-# file_max_row: calculated by any of the analysis functions.
-# sheet: calculated by any of the analysis functions.
-
-
 def calcium_oscillation_experiment_time_in_seconds(adquisiton_time, file_max_row, sheet):
+    # experiment_time_in_seconds function generates a column with the experiment duration in seconds.
+    # adquisiton_time: Set as default as 2 seconds, but could be modified by the user.
+    # file_max_column: calculated by any of the analysis functions.
+    # file_max_row: calculated by any of the analysis functions.
+    # sheet: calculated by any of the analysis functions.
+
     time_header = sheet.cell(row=1, column=1).coordinate
     sheet[time_header] = "Time (s)"
     ca_ex_st.style_headers(time_header, sheet)
@@ -136,14 +132,13 @@ def calcium_oscillation_experiment_time_in_seconds(adquisiton_time, file_max_row
         experiment_time += adquisiton_time
 
 
-# experiment_time_in_seconds function generates a column with the experiment duration in seconds.
-# adquisiton_time: Set as default as 2 seconds, but could be modified by the user.
-# file_max_column: calculated by any of the analysis functions.
-# file_max_row: calculated by any of the analysis functions.
-# sheet: calculated by any of the analysis functions.
-
-
 def experiment_time_in_seconds(adquisiton_time, file_max_column, file_max_row, sheet):
+    # experiment_time_in_seconds function generates a column with the experiment duration in seconds.
+    # adquisiton_time: Set as default as 2 seconds, but could be modified by the user.
+    # file_max_column: calculated by any of the analysis functions.
+    # file_max_row: calculated by any of the analysis functions.
+    # sheet: calculated by any of the analysis functions.
+
     time_header = sheet.cell(row=2, column=file_max_column + 3).coordinate
     sheet[time_header] = "Experiment Time (s)"
     ca_ex_st.style_headers(time_header, sheet)
@@ -156,11 +151,10 @@ def experiment_time_in_seconds(adquisiton_time, file_max_column, file_max_row, s
         experiment_time += adquisiton_time
 
 
-# initial_sheet_formating function formats the worksheet eliminating unnecesary columns and rows.
-# sheet: calculated by any of the analysis functions.
-
-
 def initial_sheet_formating(route, sheet, wb):
+    # initial_sheet_formating function formats the worksheet eliminating unnecesary columns and rows.
+    # sheet: calculated by any of the analysis functions.
+
     # Empty dictionary to store the dimensions of the columns.
     dims = {}
     for row in sheet:
@@ -195,6 +189,9 @@ def initial_sheet_formating(route, sheet, wb):
 
 
 def initial_sheet_formating_calcium_oscillation_experiment(route, sheet, wb):
+    # initial_sheet_formating function formats the worksheet eliminating unnecesary columns and rows.
+    # sheet: calculated by any of the analysis functions.
+
     # Empty dictionary to store the dimensions of the columns.
     dims = {}
     for row in sheet:
@@ -228,18 +225,14 @@ def initial_sheet_formating_calcium_oscillation_experiment(route, sheet, wb):
             to_delete = wb[sheet]
             wb.remove(to_delete)
 
-# parameter_initial_ratio_values function generates an excel cell with the calculated integral value in the integral_time range
-# for a given parameter in each sample. (Parameters= Calcium release | Calcium Entry)
-# adquisiton_time: Set as default as 2 seconds, but could be modified by the user.
-# file_max_column: calculated by any of the analysis functions.
-# integral_time: Set as default as 150 seconds, but could be modified by the user.
-# n_integral_value: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
-    # n_calcium_release_integral_value | n_calcium_entry_integral_value
-# row_number: use pre_stimuli to calculate the calcium release integral or pre_calcium for the calcium entry integral.
-# sheet: calculated by any of the analysis functions.
-
 
 def parameter_initial_ratio_values(column, file_max_column, n_integral_value, sheet):
+    # parameter_initial_ratio_values function generates an excel cell with the average ratio value for the first 10 rows (or 20 seconds)
+    # file_max_column: calculated by any of the analysis functions.
+    # n_integral_value: value that calculates the position of the excel cell.
+    # n_initial_ratio_value
+    # sheet: calculated by any of the analysis functions.
+
     calcium_beginning = sheet.cell(
         row=3, column=column).coordinate
     calcium_ending = sheet.cell(
@@ -250,18 +243,18 @@ def parameter_initial_ratio_values(column, file_max_column, n_integral_value, sh
     sheet[cell_n_calcium_value] = calcium_integral
     ca_ex_st.style_number(cell_n_calcium_value, sheet)
 
-# parameter_integral_ratio_values function generates an excel cell with the calculated integral value in the integral_time range
-# for a given parameter in each sample. (Parameters= Calcium release | Calcium Entry)
-# adquisiton_time: Set as default as 2 seconds, but could be modified by the user.
-# file_max_column: calculated by any of the analysis functions.
-# integral_time: Set as default as 150 seconds, but could be modified by the user.
-# n_integral_value: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
-    # n_calcium_release_integral_value | n_calcium_entry_integral_value
-# row_number: use pre_stimuli to calculate the calcium release integral or pre_calcium for the calcium entry integral.
-# sheet: calculated by any of the analysis functions.
-
 
 def parameter_integral_ratio_values(adquisiton_time, file_max_column, integral_time, n_integral_value, row_number, sheet):
+    # parameter_integral_ratio_values function generates an excel cell with the calculated integral value in the integral_time range
+    # for a given parameter in each sample. (Parameters= Calcium release | Calcium Entry)
+    # adquisiton_time: Set as default as 2 seconds, but could be modified by the user.
+    # file_max_column: calculated by any of the analysis functions.
+    # integral_time: Set as default as 150 seconds, but could be modified by the user.
+    # n_integral_value: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
+    # n_calcium_release_integral_value | n_calcium_entry_integral_value
+    # row_number: use pre_stimuli to calculate the calcium release integral or pre_calcium for the calcium entry integral.
+    # sheet: calculated by any of the analysis functions.
+
     calcium_beginning = sheet.cell(
         row=row_number + 1, column=file_max_column + 7).coordinate
     calcium_ending = sheet.cell(
@@ -273,17 +266,16 @@ def parameter_integral_ratio_values(adquisiton_time, file_max_column, integral_t
     ca_ex_st.style_number(cell_n_calcium_value, sheet)
 
 
-# parameter_peak_values function generates an excel cell with the maximun value (Peak) in the integral_time range
-# for a given parameter in each sample. (Parameters= Calcium release | Calcium Entry)
-# file_max_column: calculated by any of the analysis functions.
-# integral_time: Set as default as 150 seconds, but could be modified by the user.
-# n_integral_value: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
-    # n_calcium_release_peak_value |  n_calcium_entry_peak_value
-# row_number: use pre_stimuli to calculate the calcium release integral or pre_calcium for the calcium entry integral.
-# sheet: calculated by any of the analysis functions.
-
-
 def parameter_peak_values(file_max_column, integral_time, n_integral_value, row_number, sheet):
+    # parameter_peak_values function generates an excel cell with the maximun value (Peak) in the integral_time range
+    # for a given parameter in each sample. (Parameters= Calcium release | Calcium Entry)
+    # file_max_column: calculated by any of the analysis functions.
+    # integral_time: Set as default as 150 seconds, but could be modified by the user.
+    # n_integral_value: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
+    # n_calcium_release_peak_value |  n_calcium_entry_peak_value
+    # row_number: use pre_stimuli to calculate the calcium release integral or pre_calcium for the calcium entry integral.
+    # sheet: calculated by any of the analysis functions.
+
     calcium_beginning = sheet.cell(
         row=row_number + 1, column=file_max_column + 7).coordinate
     calcium_ending = sheet.cell(
@@ -295,16 +287,16 @@ def parameter_peak_values(file_max_column, integral_time, n_integral_value, row_
     ca_ex_st.style_number(cell_n_calcium_value, sheet)
 
 
-# # slope_values function generates an excel cell with the slope value of the trendline calculated from the integral_time range
-# for a given parameter in each sample. (Parameters= Calcium release | Calcium Entry)
-# # file_max_column: calculated by any of the analysis functions.
-# # integral_time: Set as default as 150 seconds, but could be modified by the user.
-# # n_integral_value: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
-# #     n_calcium_release_slope_value | n_calcium_entry_slope_value
-# # row_number: use pre_stimuli to calculate the calcium release integral or pre_calcium for the calcium entry integral.
-# # sheet: calculated by any of the analysis functions.
-
 def parameter_slope_values(column, file_max_column, n_integral_value, row_number, sheet, slope_time, time_column):
+    # slope_values function generates an excel cell with the slope value of the trendline calculated from the integral_time range
+    # for a given parameter in each sample. (Parameters= Calcium release | Calcium Entry)
+    # file_max_column: calculated by any of the analysis functions.
+    # integral_time: Set as default as 150 seconds, but could be modified by the user.
+    # n_integral_value: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
+    #     n_calcium_release_slope_value | n_calcium_entry_slope_value
+    # row_number: use pre_stimuli to calculate the calcium release integral or pre_calcium for the calcium entry integral.
+    # sheet: calculated by any of the analysis functions.
+
     calcium_beginning = sheet.cell(
         row=row_number + 1, column=column).coordinate
     calcium_ending = sheet.cell(
@@ -320,37 +312,35 @@ def parameter_slope_values(column, file_max_column, n_integral_value, row_number
     ca_ex_st.style_number(cell_n_calcium_value, sheet)
 
 
-# parameters_header_position function generates an excel cell with the name (header) of the calculated parameter in each sample.
-# file_max_column: calculated by any of the analysis functions.
-# header: the string that will appear in the excel cell: "N Release","Peak Release", "Slope Release", "N Entry", "Peak Entry", "Slope Entry".
-# n_integral_title: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
+def parameters_header_position(file_max_column, header, n_integral_title, sheet):
+    # parameters_header_position function generates an excel cell with the name (header) of the calculated parameter in each sample.
+    # file_max_column: calculated by any of the analysis functions.
+    # header: the string that will appear in the excel cell: "N Release","Peak Release", "Slope Release", "N Entry", "Peak Entry", "Slope Entry".
+    # n_integral_title: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
     # n_calcium_release_integral_title, n_calcium_release_peak_title, n_calcium_release_slope_title
     # n_calcium_entry_integral_title, n_calcium_entry_peak_title, n_calcium_entry_slope_title
-# sheet: calculated by any of the analysis functions.
+    # sheet: calculated by any of the analysis functions.
 
-
-def parameters_header_position(file_max_column, header, n_integral_title, sheet):
     cell_n_calcium_title = sheet.cell(
         row=n_integral_title, column=file_max_column + 7).coordinate
     sheet[cell_n_calcium_title] = f"{header}"
     ca_ex_st.style_average_values(cell_n_calcium_title, sheet)
 
 
-# single_cell_average_se_paramemeters function calculates the average and standard error of each parameter for the full experiment.
-# analyzed_parameter: Release | Release Peak | Release Slope | Entry | Entry Peak | Entry Slope.
-# n_integral_title: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
-#     n_calcium_release_integral_title | n_calcium_entry_integral_title
-#     n_calcium_release_peak_title | n_calcium_entry_peak_title
-#     n_calcium_release_slope_title | n_calcium_entry_slope_title
-# n_integral_value: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
-#     n_calcium_release_integral_value | n_calcium_entry_integral_value
-#     n_calcium_release_peak_value | n_calcium_entry_peak_value
-#     n_calcium_release_slope_value | n_calcium_entry_slope_value
-# sheet: calculated by any of the analysis functions.
-# total_column: final number of columns in the file after all the calculations are performed.
-
-
 def single_cell_average_se_paramemeters(analyzed_cells, analyzed_parameter, n_integral_title, n_integral_value,  sheet, total_column):
+    # single_cell_average_se_paramemeters function calculates the average and standard error of each parameter for the full experiment.
+    # analyzed_parameter: Release | Release Peak | Release Slope | Entry | Entry Peak | Entry Slope.
+    # n_integral_title: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
+    #     n_calcium_release_integral_title | n_calcium_entry_integral_title
+    #     n_calcium_release_peak_title | n_calcium_entry_peak_title
+    #     n_calcium_release_slope_title | n_calcium_entry_slope_title
+    # n_integral_value: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
+    #     n_calcium_release_integral_value | n_calcium_entry_integral_value
+    #     n_calcium_release_peak_value | n_calcium_entry_peak_value
+    #     n_calcium_release_slope_value | n_calcium_entry_slope_value
+    # sheet: calculated by any of the analysis functions.
+    # total_column: final number of columns in the file after all the calculations are performed.
+
     average_title = sheet.cell(
         row=n_integral_title, column=total_column + 2).coordinate
     sheet[average_title] = f"Average  {analyzed_parameter}"
@@ -377,15 +367,14 @@ def single_cell_average_se_paramemeters(analyzed_cells, analyzed_parameter, n_in
     ca_ex_st.style_number(standar_error_value, sheet)
 
 
-# single_cell_ratio_normalized_f_f0 function normalizes the ratio along the time of each sample with its basal value.
-# To achieve that, the program, and not this function, will create a copy of the main worksheet 'Time Measurement Report' and rename it as 'F_F0'.
-# Following along the function will them calculate the average ratio basal value for the 10 first values
-# within the timelap in 'Time Measurement Report', and will write the result in the first row of 'F_F0' for each sample.
-# Finally, it will divide each of the values in the timelap for each sample with its calculated average,
-# writing the result in the worksheet 'F_F0'.
-
-
 def single_cell_ratio_normalized_f_f0(keyword, sheet_f_f0_max_column, sheet_f_f0_max_row, sheet_f_f0):
+    # single_cell_ratio_normalized_f_f0 function normalizes the ratio along the time of each sample with its basal value.
+    # To achieve that, the program, and not this function, will create a copy of the main worksheet 'Time Measurement Report' and rename it as 'F_F0'.
+    # Following along the function will them calculate the average ratio basal value for the 10 first values
+    # within the timelap in 'Time Measurement Report', and will write the result in the first row of 'F_F0' for each sample.
+    # Finally, it will divide each of the values in the timelap for each sample with its calculated average,
+    # writing the result in the worksheet 'F_F0'.
+
     number_cell = 1
     for column in range(1, sheet_f_f0_max_column + 1):
         if sheet_f_f0.cell(row=2, column=column).value:
@@ -419,15 +408,15 @@ def single_cell_ratio_normalized_f_f0(keyword, sheet_f_f0_max_column, sheet_f_f0
                 number_cell += 1
 
 
-# single_cell_traces_in_one_chart function generates 1 single scatter chart within the file with all the traces represented where:
-#   x_axis = time(s)
-#   y_axis = Fura2 fluorescence.
-#   series = one serie for each analyzed cell
-# file_max_column: calculated by any of the analysis functions.
-# file_max_row: calculated by any of the analysis functions.
-# sheet: calculated by any of the analysis functions.
-
 def single_cell_traces_in_one_chart(file_max_column, file_max_row, sheet):
+    # single_cell_traces_in_one_chart function generates 1 single scatter chart within the file with all the traces represented where:
+    #   x_axis = time(s)
+    #   y_axis = Fura2 fluorescence.
+    #   series = one serie for each analyzed cell
+    # file_max_column: calculated by any of the analysis functions.
+    # file_max_row: calculated by any of the analysis functions.
+    # sheet: calculated by any of the analysis functions.
+
     chart_cell = sheet.cell(row=25, column=file_max_column + 7).coordinate
 
     chart = ScatterChart()
@@ -453,18 +442,17 @@ def single_cell_traces_in_one_chart(file_max_column, file_max_row, sheet):
 
     sheet.add_chart(chart, chart_cell)
 
-# single_cell_trace_in_individual_chart function generates 1 scatter chart within the file for each of the traces where:
-#   x_axis = time(s)
-#   y_axis = Fura2 fluorescence.#
-# column_individual_trace_charts: Determines the column where the chart will be created
-# experiment_number: Used as the chart title.
-# file_max_row: calculated by any of the analysis functions.
-# row_individual_trace_charts: Determines the column where the chart will be created
-# sheet: calculated by any of the analysis functions.
-# time_column: calculates the maximun column number within the file.
-
 
 def single_cell_trace_in_individual_chart(column, column_individual_trace_charts, chart_name, file_max_row,  sheet, row_individual_trace_charts, time_column):
+    # single_cell_trace_in_individual_chart function generates 1 scatter chart within the file for each of the traces where:
+    #   x_axis = time(s)
+    #   y_axis = Fura2 fluorescence.#
+    # column_individual_trace_charts: Determines the column where the chart will be created
+    # experiment_number: Used as the chart title.
+    # file_max_row: calculated by any of the analysis functions.
+    # row_individual_trace_charts: Determines the column where the chart will be created
+    # sheet: calculated by any of the analysis functions.
+    # time_column: calculates the maximun column number within the file.
 
     chart_cell = sheet.cell(row=row_individual_trace_charts,
                             column=column_individual_trace_charts).coordinate
@@ -490,16 +478,14 @@ def single_cell_trace_in_individual_chart(column, column_individual_trace_charts
     sheet.add_chart(chart, chart_cell)
 
 
-# single_cell_slope_trace_chart function generates 1 scatter chart within the file for each of the traces where:
-#   x_axis = slope_time
-#   y_axis = Fura2 fluorescence.#
-# column_individual_trace_charts: Determines the column where the chart will be created
-# experiment_number: Used as the chart title.
-# file_max_row: calculated by any of the analysis functions.
-# row_individual_trace_charts: Determines the column where the chart will be created
-
-
 def single_cell_slope_trace_chart(column, column_slope_charts, chart_name, row_charts, row_number, sheet, slope_name, slope_time, time_column):
+    # single_cell_slope_trace_chart function generates 1 scatter chart within the file for each of the traces where:
+    #   x_axis = slope_time
+    #   y_axis = Fura2 fluorescence.#
+    # column_individual_trace_charts: Determines the column where the chart will be created
+    # experiment_number: Used as the chart title.
+    # file_max_row: calculated by any of the analysis functions.
+    # row_individual_trace_charts: Determines the column where the chart will be created
 
     chart_cell = sheet.cell(row=row_charts,
                             column=column_slope_charts).coordinate
