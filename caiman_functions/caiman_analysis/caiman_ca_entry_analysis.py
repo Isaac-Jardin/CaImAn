@@ -27,12 +27,14 @@ def calcium_entry_analysis(adquisiton_time, integral_time, keyword, pre_stimuli,
     time_column = file_max_column + 3
     sheet_f_f0_max_column = sheet.max_column
     sheet_f_f0_max_row = sheet.max_row
-    n_calcium_entry_integral_title = file_max_row + 3
-    n_calcium_entry_integral_value = file_max_row + 4
-    n_calcium_entry_peak_title = file_max_row + 5
-    n_calcium_entry_peak_value = file_max_row + 6
-    n_calcium_entry_slope_title = file_max_row + 7
-    n_calcium_entry_slope_value = file_max_row + 8
+    n_initial_ratio_title = file_max_row + 3
+    n_initial_ratio_value = file_max_row + 4
+    n_calcium_entry_integral_title = file_max_row + 6
+    n_calcium_entry_integral_value = file_max_row + 7
+    n_calcium_entry_peak_title = file_max_row + 8
+    n_calcium_entry_peak_value = file_max_row + 9
+    n_calcium_entry_slope_title = file_max_row + 10
+    n_calcium_entry_slope_value = file_max_row + 11
 
     ca_cal.experiment_time_in_seconds(
         adquisiton_time, file_max_column, file_max_row, sheet)
@@ -67,6 +69,12 @@ def calcium_entry_analysis(adquisiton_time, integral_time, keyword, pre_stimuli,
                 ca_cal.basal_ratio_pretreatment_and_increment_calculation(column, file_max_column,
                                                                           integral_time, pre_stimuli, sheet)
 
+                ca_cal.parameters_header_position(file_max_column, "Initial Ratio",
+                                                  n_initial_ratio_title, sheet)
+
+                ca_cal.parameter_initial_ratio_values(
+                    column, file_max_column, n_initial_ratio_value, sheet)
+
                 ca_cal.parameters_header_position(file_max_column, "Entry Integral",
                                                   n_calcium_entry_integral_title, sheet)
 
@@ -92,6 +100,9 @@ def calcium_entry_analysis(adquisiton_time, integral_time, keyword, pre_stimuli,
     print(f"Number of analyzed cells: {ca_cal.analyzed_cell_number(sheet)}.")
     analyzed_cells = ca_cal.analyzed_cell_number(sheet)
     total_column = sheet.max_column
+
+    ca_cal.single_cell_average_se_paramemeters(analyzed_cells, "Initial Ratio", n_initial_ratio_title,
+                                               n_initial_ratio_value,  sheet, total_column)
 
     ca_cal.single_cell_average_se_paramemeters(analyzed_cells, "Entry", n_calcium_entry_integral_title,
                                                n_calcium_entry_integral_value,  sheet, total_column)
@@ -156,12 +167,14 @@ def calcium_entry_multi_analysis(adquisiton_time, file, folder, integral_time, k
     time_column = file_max_column + 3
     sheet_f_f0_max_column = sheet.max_column
     sheet_f_f0_max_row = sheet.max_row
-    n_calcium_entry_integral_title = file_max_row + 3
-    n_calcium_entry_integral_value = file_max_row + 4
-    n_calcium_entry_peak_title = file_max_row + 5
-    n_calcium_entry_peak_value = file_max_row + 6
-    n_calcium_entry_slope_title = file_max_row + 7
-    n_calcium_entry_slope_value = file_max_row + 8
+    n_initial_ratio_title = file_max_row + 3
+    n_initial_ratio_value = file_max_row + 4
+    n_calcium_entry_integral_title = file_max_row + 6
+    n_calcium_entry_integral_value = file_max_row + 7
+    n_calcium_entry_peak_title = file_max_row + 8
+    n_calcium_entry_peak_value = file_max_row + 9
+    n_calcium_entry_slope_title = file_max_row + 10
+    n_calcium_entry_slope_value = file_max_row + 11
 
     ca_cal.experiment_time_in_seconds(
         adquisiton_time, file_max_column, file_max_row, sheet)
@@ -196,6 +209,12 @@ def calcium_entry_multi_analysis(adquisiton_time, file, folder, integral_time, k
                 ca_cal.basal_ratio_pretreatment_and_increment_calculation(column, file_max_column,
                                                                           integral_time, pre_stimuli, sheet)
 
+                ca_cal.parameters_header_position(file_max_column, "Initial Ratio",
+                                                  n_initial_ratio_title, sheet)
+
+                ca_cal.parameter_initial_ratio_values(
+                    column, file_max_column, n_initial_ratio_value, sheet)
+
                 ca_cal.parameters_header_position(file_max_column, "Entry Integral",
                                                   n_calcium_entry_integral_title, sheet)
 
@@ -221,6 +240,9 @@ def calcium_entry_multi_analysis(adquisiton_time, file, folder, integral_time, k
     print(f"Number of analyzed cells: {ca_cal.analyzed_cell_number(sheet)}.")
     analyzed_cells = ca_cal.analyzed_cell_number(sheet)
     total_column = sheet.max_column
+
+    ca_cal.single_cell_average_se_paramemeters(analyzed_cells, "Initial Ratio", n_initial_ratio_title,
+                                               n_initial_ratio_value,  sheet, total_column)
 
     ca_cal.single_cell_average_se_paramemeters(analyzed_cells, "Entry", n_calcium_entry_integral_title,
                                                n_calcium_entry_integral_value,  sheet, total_column)

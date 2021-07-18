@@ -228,6 +228,28 @@ def initial_sheet_formating_calcium_oscillation_experiment(route, sheet, wb):
             to_delete = wb[sheet]
             wb.remove(to_delete)
 
+# parameter_initial_ratio_values function generates an excel cell with the calculated integral value in the integral_time range
+# for a given parameter in each sample. (Parameters= Calcium release | Calcium Entry)
+# adquisiton_time: Set as default as 2 seconds, but could be modified by the user.
+# file_max_column: calculated by any of the analysis functions.
+# integral_time: Set as default as 150 seconds, but could be modified by the user.
+# n_integral_value: value that calculates the position of the excel cell. Calculated by any of the analysis functions.
+    # n_calcium_release_integral_value | n_calcium_entry_integral_value
+# row_number: use pre_stimuli to calculate the calcium release integral or pre_calcium for the calcium entry integral.
+# sheet: calculated by any of the analysis functions.
+
+
+def parameter_initial_ratio_values(column, file_max_column, n_integral_value, sheet):
+    calcium_beginning = sheet.cell(
+        row=3, column=column).coordinate
+    calcium_ending = sheet.cell(
+        row=13, column=column).coordinate
+    calcium_integral = f"= (average({calcium_beginning}:{calcium_ending}))"
+    cell_n_calcium_value = sheet.cell(
+        row=n_integral_value, column=file_max_column + 7).coordinate
+    sheet[cell_n_calcium_value] = calcium_integral
+    ca_ex_st.style_number(cell_n_calcium_value, sheet)
+
 # parameter_integral_ratio_values function generates an excel cell with the calculated integral value in the integral_time range
 # for a given parameter in each sample. (Parameters= Calcium release | Calcium Entry)
 # adquisiton_time: Set as default as 2 seconds, but could be modified by the user.
