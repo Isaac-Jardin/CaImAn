@@ -5,6 +5,7 @@
 
 import os
 import pyinputplus as pyip
+import shutil
 import time
 from pathlib import Path
 
@@ -44,10 +45,10 @@ def complete_analysis_module():
                 integral_time = 75
 
             pre_stimuli = pyip.inputInt(
-                prompt="Introduce the ROW where the ratio basal pre-stimuli will be calculated: ", min=15)
+                prompt="Introduce the ROW where the ratio basal pre-stimuli will be calculated: ", min=10)
 
             pre_calcium = pyip.inputInt(
-                prompt="Introduce the ROW where the ratio basal pre-calcium will be calculated: ", min=15)
+                prompt="Introduce the ROW where the ratio basal pre-calcium will be calculated: ", min=10)
 
             slope_time_release = pyip.inputInt(
                 prompt=ca_mess.slope_time_release_message, blank=True)
@@ -88,7 +89,7 @@ def complete_analysis_module():
                 integral_time = 75
 
             pre_stimuli = pyip.inputInt(
-                prompt="Introduce the ROW where the ratio basal pre-stimuli will be calculated: ", min=15)
+                prompt="Introduce the ROW where the ratio basal pre-stimuli will be calculated: ", min=10)
 
             slope_time = pyip.inputInt(
                 prompt=ca_mess.slope_time_entry_message, blank=True)
@@ -129,10 +130,10 @@ def complete_analysis_module():
                 peak_longitude = 1
 
             time_initial_linregress = pyip.inputInt(
-                prompt=ca_mess.time_initial_linregress_text, min=15)
+                prompt=ca_mess.time_initial_linregress_text, min=10)
 
             time_final_linregress = pyip.inputInt(
-                prompt=ca_mess.time_final_linregress_text, min=15)
+                prompt=ca_mess.time_final_linregress_text, min=10)
 
             y_min_value = pyip.inputFloat(
                 prompt="Introduce your y axis minimum value to plot your data or leave it empty to let the program to calculate it: ", blank=True)
@@ -170,10 +171,10 @@ def complete_analysis_module():
             #     peak_longitude = 1
 
             # time_initial_linregress = pyip.inputInt(
-            #     prompt=ca_mess.time_initial_linregress_text, min=15)
+            #     prompt=ca_mess.time_initial_linregress_text, min=10)
 
             # time_final_linregress = pyip.inputInt(
-            #     prompt=ca_mess.time_final_linregress_text, min=15)
+            #     prompt=ca_mess.time_final_linregress_text, min=10)
 
             # start_time = time.time()
             # confocal_ca_oscillation_analysis(adquisiton_time, peak_amplitude, peak_longitude,
@@ -208,9 +209,9 @@ def complete_analysis_module():
                             integral_time = 75
 
                         pre_stimuli = pyip.inputInt(
-                            prompt="Introduce the ROW where the ratio basal pre-stimuli will be calculated: ", min=15)
+                            prompt="Introduce the ROW where the ratio basal pre-stimuli will be calculated: ", min=10)
                         pre_calcium = pyip.inputInt(
-                            prompt="Introduce the ROW where the ratio basal pre-calcium will be calculated: ", min=15)
+                            prompt="Introduce the ROW where the ratio basal pre-calcium will be calculated: ", min=10)
                         start_time = time.time()
 
                         slope_time_release = pyip.inputInt(
@@ -229,6 +230,63 @@ def complete_analysis_module():
                         print(
                             f"Execution time: {round((time.time()-start_time), 2)} seconds.")
                         print("Done.\n")
+
+        elif analysis_study == "SOCE analysis (Z-Stack).":
+            route_input = pyip.inputFilepath(
+                prompt="Please enter your folder path: ")
+            route_folder = Path(route_input)
+            print(
+                f"Please set the following conditions for your Z-Stack experiment.")
+            adquisiton_time = pyip.inputInt(
+                prompt="Introduce your acquisition time or leave it empty to set the default (2 seconds): ", blank=True)
+            if adquisiton_time == "":
+                adquisiton_time = 2
+
+            keyword = pyip.inputStr(
+                prompt=ca_mess.keyword_message, blank=True)
+            if keyword == "":
+                keyword = "Ratio"
+
+            integral_time = pyip.inputInt(
+                prompt=ca_mess.integral_time_message, blank=True)
+            if integral_time == "":
+                integral_time = 75
+
+            pre_stimuli = pyip.inputInt(
+                prompt="Introduce the ROW where the ratio basal pre-stimuli will be calculated: ", min=10)
+            pre_calcium = pyip.inputInt(
+                prompt="Introduce the ROW where the ratio basal pre-calcium will be calculated: ", min=10)
+
+            slope_time_release = pyip.inputInt(
+                prompt=ca_mess.slope_time_release_message, blank=True)
+            if slope_time_release == "":
+                slope_time_release = 15
+
+            slope_time_entry = pyip.inputInt(
+                prompt=ca_mess.slope_time_entry_message, blank=True)
+            if slope_time_entry == "":
+                slope_time_entry = 15
+            start_time = time.time()
+            for folder, subfolders, files in os.walk(route_folder):
+                for file in files:
+                    if ".xlsx" in file:
+                        route = os.path.join(folder, file)
+                        soce_multi_analysis(
+                            adquisiton_time, file, folder, integral_time, keyword, pre_calcium, pre_stimuli, slope_time_entry, slope_time_release)
+
+            folder_output = Path(f"{route_folder.parent}\\XLSXs_analyzed")
+            num_files = 0
+            for folder, subfolders, files in os.walk(route_folder):
+                for file in files:
+                    if "analyzed" in file:
+                        num_files += 1
+                        source = os.path.join(route_folder, file)
+                        route_output = os.path.join(folder_output, file)
+                        shutil.move(source, route_output)
+            print(
+                f"Execution time: {round((time.time()-start_time), 2)} seconds.")
+            print(f"Your {num_files} files have been moved to {folder_output}")
+            print("Done.\n")
 
         elif analysis_study == "Calcium entry analysis (multiple files).":
             route_input = pyip.inputFilepath(
@@ -256,7 +314,7 @@ def complete_analysis_module():
                             integral_time = 75
 
                         pre_stimuli = pyip.inputInt(
-                            prompt="Introduce the ROW where the ratio basal pre-stimuli will be calculated: ", min=15)
+                            prompt="Introduce the ROW where the ratio basal pre-stimuli will be calculated: ", min=10)
 
                         slope_time = pyip.inputInt(
                             prompt=ca_mess.slope_time_entry_message, blank=True)
@@ -269,6 +327,58 @@ def complete_analysis_module():
                         print(
                             f"Execution time: {round((time.time()-start_time), 2)} seconds.")
                         print("Done.\n")
+
+        elif analysis_study == "Calcium entry analysis (Z-Stack).":
+            route_input = pyip.inputFilepath(
+                prompt="Please enter your folder path: ")
+            route_folder = Path(route_input)
+            print(
+                f"Please set the following conditions for your Z-Stack experiment.")
+            adquisiton_time = pyip.inputInt(
+                prompt="Introduce your acquisition time or leave it empty to set the default (2 seconds): ", blank=True)
+            if adquisiton_time == "":
+                adquisiton_time = 2
+
+            keyword = pyip.inputStr(
+                prompt=ca_mess.keyword_message, blank=True)
+            if keyword == "":
+                keyword = "Ratio"
+
+            integral_time = pyip.inputInt(
+                prompt=ca_mess.integral_time_message, blank=True)
+            if integral_time == "":
+                integral_time = 75
+
+            pre_stimuli = pyip.inputInt(
+                prompt="Introduce the ROW where the ratio basal pre-stimuli will be calculated: ", min=10)
+
+            slope_time = pyip.inputInt(
+                prompt=ca_mess.slope_time_entry_message, blank=True)
+            if slope_time == "":
+                slope_time = 15
+
+            start_time = time.time()
+            for folder, subfolders, files in os.walk(route_folder):
+                for file in files:
+                    if ".xlsx" in file:
+                        route = os.path.join(folder, file)
+
+                        calcium_entry_multi_analysis(
+                            adquisiton_time, file, folder, integral_time, keyword, pre_stimuli, slope_time)
+
+            folder_output = Path(f"{route_folder.parent}\\XLSXs_analyzed")
+            num_files = 0
+            for folder, subfolders, files in os.walk(route_folder):
+                for file in files:
+                    if "analyzed" in file:
+                        num_files += 1
+                        source = os.path.join(route_folder, file)
+                        route_output = os.path.join(folder_output, file)
+                        shutil.move(source, route_output)
+            print(
+                f"Execution time: {round((time.time()-start_time), 2)} seconds.")
+            print(f"Your {num_files} files have been moved to {folder_output}")
+            print("Done.\n")
 
         elif analysis_study == "Imaging calcium oscillations analysis (multiple files).":
 
@@ -303,7 +413,7 @@ def complete_analysis_module():
                             peak_longitude = 1
 
                         time_initial_linregress = pyip.inputInt(
-                            prompt=ca_mess.time_initial_linregress_text, min=15)
+                            prompt=ca_mess.time_initial_linregress_text, min=10)
 
                         time_final_linregress = pyip.inputInt(
                             prompt=ca_mess.time_final_linregress_text)
