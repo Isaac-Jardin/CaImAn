@@ -443,7 +443,7 @@ def imaging_ca_oscillation_multi_analysis(adquisiton_time, keyword, file, folder
         temporal_images = os.path.join(folder, non_space_filename)
         Path(temporal_images).mkdir(parents=True, exist_ok=True)
         fig_name = os.path.join(temporal_images, f"{column}.png")
-        plt.savefig(fig_name.replace(" ", "_"), dpi=100)
+        plt.savefig(fig_name, dpi=100)
         # plt.show()
 
     print("")
