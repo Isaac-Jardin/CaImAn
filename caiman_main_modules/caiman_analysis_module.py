@@ -13,6 +13,7 @@ from caiman_text import caiman_messages as ca_mess
 from caiman_functions.caiman_analysis.caiman_ca_entry_analysis import calcium_entry_analysis, calcium_entry_multi_analysis
 from caiman_functions.caiman_analysis.caiman_ca_oscillations_confocal import confocal_ca_oscillation_analysis
 from caiman_functions.caiman_analysis.caiman_ca_oscillations_imaging import imaging_ca_oscillation_analysis, imaging_ca_oscillation_multi_analysis
+from caiman_functions.caiman_analysis.caiman_ca_oscillations_PCA import imaging_ca_analysis_PCA
 from caiman_functions.caiman_analysis.caiman_soce_analysis import soce_analysis, soce_multi_analysis
 from caiman_functions.caiman_utilities.csv_2_xlsx_converter import imageJ_reanalysis_multiple_files, imageJ_reanalysis_single_file
 
@@ -144,6 +145,48 @@ def complete_analysis_module():
             start_time = time.time()
             imaging_ca_oscillation_analysis(adquisiton_time, keyword, peak_amplitude,
                                             peak_longitude, route, time_initial_linregress, time_final_linregress, y_max_value, y_min_value)
+            print(
+                f"Execution time: {round((time.time()-start_time), 2)} seconds.")
+            print("Done.\n")
+
+        elif analysis_study == "PCA (single file).":
+            route_input = pyip.inputFilepath(
+                prompt="Please enter your file path: ")
+            route = Path(route_input)
+            os.chdir(route.parent)
+
+            adquisiton_time = pyip.inputFloat(
+                prompt="Introduce your acquisition time or leave it empty to set the default (2 seconds): ", blank=True)
+            if adquisiton_time == "":
+                adquisiton_time = 2
+
+            keyword = pyip.inputStr(
+                prompt=ca_mess.keyword_message, blank=True)
+            if keyword == "":
+                keyword = "Ratio"
+
+            peak_amplitude = pyip.inputFloat(
+                prompt="Introduce your sought peak amplitude (prominence) or leave it empty to set the default (0.02): ", blank=True)
+            if peak_amplitude == "":
+                peak_amplitude = 0.02
+
+            peak_longitude = pyip.inputFloat(
+                prompt="Introduce your sought peak longitude (width) or leave it empty to set the default (1): ", blank=True)
+            if peak_longitude == "":
+                peak_longitude = 1
+
+            time_initial_linregress = pyip.inputInt(
+                prompt=ca_mess.time_initial_linregress_text, min=10)
+
+            y_min_value = pyip.inputFloat(
+                prompt="Introduce your y axis minimum value to plot your data or leave it empty to let the program to calculate it: ", blank=True)
+
+            y_max_value = pyip.inputFloat(
+                prompt="Introduce your y axis maximum value to plot your data or leave it empty to let the program to calculate it: ", blank=True)
+
+            start_time = time.time()
+            imaging_ca_analysis_PCA(adquisiton_time, keyword, peak_amplitude,
+                                    peak_longitude, route, time_initial_linregress, y_max_value, y_min_value)
             print(
                 f"Execution time: {round((time.time()-start_time), 2)} seconds.")
             print("Done.\n")

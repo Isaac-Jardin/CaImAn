@@ -251,6 +251,7 @@ or leave it empty to set the default (Ratio): """
 analysis_study_dict = ["SOCE analysis (single file).",
                        "Calcium entry analysis (single file).",
                        "Imaging calcium oscillations analysis (single file).",
+                       "PCA (single file).",
                        "Confocal calcium oscillations analysis (single file).",
                        "SOCE analysis (multiple files).",
                        "SOCE analysis (Z-Stack).",
