@@ -258,6 +258,7 @@ analysis_study_dict = ["SOCE analysis (single file).",
                        "Calcium entry analysis (multiple files).",
                        "Calcium entry analysis (Z-Stack).",
                        "Imaging calcium oscillations analysis (multiple files).",
+                       "Imaging calcium analysis PCA multiple",
                        "Go back to the main menu.",
                        ]
 

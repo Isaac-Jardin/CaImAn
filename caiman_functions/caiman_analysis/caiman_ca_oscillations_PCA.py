@@ -43,7 +43,7 @@ def imaging_ca_analysis_PCA(adquisiton_time, keyword, peak_amplitude, peak_longi
                 ca_ex_st.style_headers(sample_number_header, sheet)
                 number_cell += 1
 
-    splitted_file = route.stem
+    splitted_file = Path(route).stem
     non_space_filename = splitted_file.replace(" ", "_")
     wb.save(f"{non_space_filename}_modified.xlsx")
 
@@ -223,3 +223,13 @@ def imaging_ca_analysis_PCA(adquisiton_time, keyword, peak_amplitude, peak_longi
                 os.remove(file_route)
                 shutil.rmtree(subfolder)
                 print(f"{filename} has been saved.")
+
+
+def imaging_ca_analysis_PCA_multiple(adquisiton_time, keyword, peak_amplitude, peak_longitude, path_folder, time_initial_linregress, y_max_value, y_min_value):
+    file_route = Path(path_folder)
+    os.chdir(file_route)
+    for folder, _, files in os.walk(file_route):
+        for file in files:
+            route = os.path.join(folder, file)
+            imaging_ca_analysis_PCA(adquisiton_time, keyword, peak_amplitude,
+                                    peak_longitude, route, time_initial_linregress, y_max_value, y_min_value)
